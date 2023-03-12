@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="${'Hi ' + recipientName + '!'}"></p>
+<p>Thank you for registering in Dancify! Click on the link below to activate your account!</p>
+<p>Link will be active for 15 minutes. </p>
+<a th:text="${activationUrl}" th:href="${activationUrl}"></a>
+<p>
+    <em>Dencify team</em> <br />
+</p>
+</body>
+</html>
