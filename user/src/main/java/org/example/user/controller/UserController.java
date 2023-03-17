@@ -3,8 +3,7 @@ package org.example.user.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import lombok.AllArgsConstructor;
-import org.example.user.exception.IntegrityException;
-import org.example.user.exception.UserNotFoundException;
+import org.example.user.exception.*;
 import org.example.user.jwt.JwtTokenUtil;
 import org.example.user.messaging.Sender;
 import org.example.user.model.User;
@@ -24,9 +23,6 @@ import java.util.Optional;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private static final String EMAIL_TAKEN = "Specified email is already in use";
-    private static final String USERNAME_TAKEN = "Specified username is already in use";
-
     private static final String USER_ACTIVATION_URL = "http://localhost:8080/api/user/activate?token=";
 
 
@@ -41,10 +37,19 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO user) throws UserNotFoundException {
-        Optional<User> userEntity = userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+    public String login(@RequestBody UserDTO user) throws UserNotFoundException, IncorrectPasswordException, UserNotActivatedException {
+        Optional<User> optionalUser = userRepository.findByUsernameOrEmail(user.getUsername(), user.getUsername());
+        User userEntity = optionalUser.orElseThrow(UserNotFoundException::new);
 
-        return jwtTokenUtil.generateToken(userEntity.orElseThrow(UserNotFoundException::new));
+        if(!userEntity.getPassword().equals(user.getPassword())) {
+            throw new IncorrectPasswordException();
+        }
+
+        if(!userEntity.isActivated()) {
+            throw new UserNotActivatedException();
+        }
+
+        return jwtTokenUtil.generateToken(userEntity);
     }
 
     @PostMapping("/register")
@@ -52,9 +57,9 @@ public class UserController {
         userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail())
                 .ifPresent(optionalUser -> {
                     if(optionalUser.getEmail().equals(user.getEmail()))
-                        throw new IntegrityException(EMAIL_TAKEN);
+                        throw new IntegrityException(ErrorMessages.EMAIL_TAKEN, ErrorCodes.EMAIL_TAKEN_CODE);
                     else
-                        throw new IntegrityException(USERNAME_TAKEN);
+                        throw new IntegrityException(ErrorMessages.USERNAME_TAKEN, ErrorCodes.USERNAME_TAKEN_CODE);
                 });
 
         User userEntity = new User();
