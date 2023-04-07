@@ -24,7 +24,10 @@ public class Event {
 
     private String name;
 
-    private String style;
+    private String eventType;
+
+    @ElementCollection
+    private List<String> danceStyles;
 
     private String description;
 

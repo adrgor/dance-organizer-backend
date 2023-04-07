@@ -9,7 +9,7 @@
 - email-service:8090-8099
 - naming-server: 8761
 
-#ERROR CODES
+# ERROR CODES
 - 1000 - Specified email is already in use
 - 1001 - Specified username is already in use
 - 1002 - Specified user has not been activated yet
