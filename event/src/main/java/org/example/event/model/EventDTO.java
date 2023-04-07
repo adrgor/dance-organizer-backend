@@ -1,9 +1,6 @@
 package org.example.event.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -14,12 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 public class EventDTO {
 
-    private String name;
-    private String style;
+    private String eventName;
+    private List<String> danceStyles;
+    private String eventType;
     private String description;
     private String country;
     private String city;
-    private Date startingDate;
-    private Date endingDate;
-    private List<PassDTO> passes;
+    private Date startDate;
+    private Date endDate;
 }

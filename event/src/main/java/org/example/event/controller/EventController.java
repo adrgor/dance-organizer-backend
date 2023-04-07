@@ -4,33 +4,36 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.AllArgsConstructor;
-import org.example.event.clients.UserClient;
 import org.example.event.exception.EventOwnerNotProvidedException;
-import org.example.event.model.*;
+import org.example.event.model.Event;
+import org.example.event.model.EventDTO;
+import org.example.event.model.StatusEnum;
 import org.example.event.repository.EventRepository;
-import org.example.event.repository.PassRepository;
+import org.example.event.service.EventFilter;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/event")
 @AllArgsConstructor
 public class EventController {
     private final EventRepository eventRepository;
-    private final PassRepository passRepository;
-    private final UserClient userClient;
 
     @GetMapping
-    public List<Event> getAllEvents() {
-//        ResponseEntity<String> response = userClient.validateToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MCwiaWF0IjoxNjc3ODYwNTM5LCJlbWFpbCI6ImFkcmlhbmdvcnNraTIwQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiQWRyaWFuMTIzIn0.PqIZFrICED5xLAO0P-F-AOr2BTD9xEeK2ppumE7CvN8");
-//        System.out.println(response.getStatusCode());
+    public List<Event> getEvents(@RequestParam Map<String, String> filter) {
 
+        List<Event> events = eventRepository.findAll();
 
-        return eventRepository.findAll();
+        return EventFilter.filter(events, filter);
+    }
+
+    @GetMapping("/last_page")
+    public long getEventLastPageNumber(@RequestParam("events_per_page") int numberOfEvents) {
+        return eventRepository.count() / numberOfEvents;
     }
 
     @GetMapping("/{id}")
@@ -58,35 +61,27 @@ public class EventController {
         Claim id = decodedJwt.getClaim("id");
 
         eventEntity.setOrganizerUserId(id.asInt());
-        eventEntity.setName(eventDto.getName());
+        eventEntity.setName(eventDto.getEventName());
         eventEntity.setDescription(eventDto.getDescription());
-        eventEntity.setStyle(eventDto.getStyle());
+        eventEntity.setDanceStyles(eventDto.getDanceStyles());
+        eventEntity.setEventType(eventDto.getEventType());
         eventEntity.setCountry(eventDto.getCountry());
         eventEntity.setCity(eventDto.getCity());
-        eventEntity.setStartingDate(eventDto.getStartingDate());
-        eventEntity.setEndingDate(eventDto.getEndingDate());
+        eventEntity.setStartingDate(eventDto.getStartDate());
+        eventEntity.setEndingDate(eventDto.getEndDate());
 
         eventEntity.setStatus(StatusEnum.DRAFT);
 
         eventRepository.save(eventEntity);
-
-        eventDto.getPasses().forEach(passDto -> {
-            Pass pass = new Pass();
-            pass.setEvent(eventEntity);
-            pass.setPassName(passDto.getPassName());
-            pass.setNumberOfPasses(passDto.getNumberOfPasses());
-            pass.setPassType(PassTypeEnum.valueOf(passDto.getPassType()));
-            passRepository.save(pass);
-        });
     }
 
     @DeleteMapping
     public void deleteEvent() {
-
+        // TODO: Add event removal functionality
     }
 
     @PutMapping
     public void editEvent() {
-
+        // TODO: Add event editing functionality
     }
 }
