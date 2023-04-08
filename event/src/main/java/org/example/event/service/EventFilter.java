@@ -19,11 +19,11 @@ public class EventFilter {
     public static List<Event> filter(List<Event> events, Map<String, String> filter) {
         int eventsPerPage = parseInt(filter.get("events_per_page"), 10);
         int pageNumber = parseInt(filter.get("page_number"), 1);
-        String eventName = filter.get("event_name");
-        String countries = filter.get("countries");
-        String cities = filter.get("city");
-        String eventTypes = filter.get("event_types");
-        String danceStyles = filter.get("dance_styles");
+        String eventName = filter.getOrDefault("event_name", "");
+        String countries = filter.getOrDefault("countries", "");
+        String cities = filter.getOrDefault("city", "");
+        String eventTypes = filter.getOrDefault("event_types", "");
+        String danceStyles = filter.getOrDefault("dance_styles", "");
 
         int firstEventIndex = (pageNumber - 1) * eventsPerPage;
 
@@ -39,8 +39,8 @@ public class EventFilter {
                         String.join("", event.getDanceStyles()).toUpperCase().contains(danceStyles.toUpperCase()));
 
         try {
-            Date fromDate = DateFormat.getDateInstance().parse(filter.get("from_date"));
-            Date toDate = DateFormat.getDateInstance().parse(filter.get("to_date"));
+            Date fromDate = DateFormat.getDateInstance().parse(filter.getOrDefault("from_date", ""));
+            Date toDate = DateFormat.getDateInstance().parse(filter.getOrDefault("to_date", ""));
 
             eventsStream = eventsStream
                 .filter(event -> event.getEndingDate().after(fromDate))

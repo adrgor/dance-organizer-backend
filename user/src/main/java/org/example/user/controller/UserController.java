@@ -107,11 +107,8 @@ public class UserController {
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity<String> validateToken(@RequestBody String jwt) {
-        if(jwtTokenUtil.isTokenValid(jwt) && userRepository.findById(jwtTokenUtil.getUserIdFromToken(jwt)).isPresent()){
-            return ResponseEntity.ok().build();
-        }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public boolean validateToken(@RequestBody String jwt) {
+        return jwtTokenUtil.isTokenValid(jwt) &&
+               userRepository.findById(jwtTokenUtil.getUserIdFromToken(jwt)).isPresent();
     }
 }
