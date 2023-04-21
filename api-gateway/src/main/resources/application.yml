@@ -23,6 +23,8 @@ spring:
             allowedMethods:
               - GET
               - POST
+              - DELETE
+              - PUT
               - OPTIONS
 
 server:
