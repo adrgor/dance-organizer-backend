@@ -9,5 +9,7 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
     List<Event> findByStatus(StatusEnum statusEnum);
+    int countByStatus(StatusEnum statusEnum);
     List<Event> findByOrganizerUserId(int organizerUserId);
+    int countByOrganizerUserId(int organizerUserId);
 }

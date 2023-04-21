@@ -1,6 +1,9 @@
 package org.example.event.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
@@ -19,4 +22,5 @@ public class EventDTO {
     private String city;
     private Date startDate;
     private Date endDate;
+    private StatusEnum status;
 }

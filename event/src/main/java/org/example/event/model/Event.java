@@ -29,6 +29,7 @@ public class Event {
     @ElementCollection
     private List<String> danceStyles;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String country;
@@ -43,4 +44,7 @@ public class Event {
     private List<Pass> passes;
 
     private StatusEnum status;
+
+    @Transient
+    private boolean isOwned;
 }
