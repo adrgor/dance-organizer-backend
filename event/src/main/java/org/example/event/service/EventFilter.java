@@ -43,10 +43,9 @@ public class EventFilter {
             Date toDate = DateFormat.getDateInstance().parse(filter.getOrDefault("to_date", ""));
 
             eventsStream = eventsStream
-                .filter(event -> event.getEndingDate().after(fromDate))
-                .filter(event -> event.getStartingDate().before(toDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
+                    .filter(event -> event.getEndingDate().after(fromDate))
+                    .filter(event -> event.getStartingDate().before(toDate));
+        } catch (ParseException ignored) {
         }
 
         return eventsStream
