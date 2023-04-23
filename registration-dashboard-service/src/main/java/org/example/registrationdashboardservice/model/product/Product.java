@@ -7,6 +7,6 @@ import java.util.List;
 @Data
 public class Product {
     private String name;
-    private ProductInputType type;
+    private String fieldType;
     private List<ProductOption> productOptions;
 }
