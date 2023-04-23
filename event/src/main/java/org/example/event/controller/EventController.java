@@ -121,6 +121,11 @@ public class EventController {
 
             eventRepository.save(event);
         }
+    }
 
+    @GetMapping("/owner/{id}")
+    public int getEventOwnerId(@PathVariable("id") int eventId) throws EventNotFoundException {
+        Event event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
+        return event.getOrganizerUserId();
     }
 }
