@@ -7,8 +7,8 @@ import java.util.List;
 @Data
 public class RegistrationInput {
 
-    private String name;
-    private RegistrationInputType inputType;
+    private String question;
+    private String type;
     private List<String> options;
     private Boolean isRequired;
     private String description;

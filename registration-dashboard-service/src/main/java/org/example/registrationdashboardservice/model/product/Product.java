@@ -8,5 +8,5 @@ import java.util.List;
 public class Product {
     private String name;
     private String fieldType;
-    private List<ProductOption> productOptions;
+    private List<ProductOption> options;
 }
