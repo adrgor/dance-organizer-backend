@@ -64,14 +64,14 @@ public class EventController {
 
         Event eventEntity = new Event();
         eventEntity.setOrganizerUserId(authenticatedUser.id());
-        eventEntity.setName(eventDTO.getEventName());
-        eventEntity.setDescription(eventDTO.getDescription());
-        eventEntity.setDanceStyles(eventDTO.getDanceStyles());
-        eventEntity.setEventType(eventDTO.getEventType());
-        eventEntity.setCountry(eventDTO.getCountry());
-        eventEntity.setCity(eventDTO.getCity());
-        eventEntity.setStartingDate(eventDTO.getStartDate());
-        eventEntity.setEndingDate(eventDTO.getEndDate());
+        eventEntity.setName(eventDTO.eventName());
+        eventEntity.setDescription(eventDTO.description());
+        eventEntity.setDanceStyles(eventDTO.danceStyles());
+        eventEntity.setEventType(eventDTO.eventType());
+        eventEntity.setCountry(eventDTO.country());
+        eventEntity.setCity(eventDTO.city());
+        eventEntity.setStartingDate(eventDTO.startDate());
+        eventEntity.setEndingDate(eventDTO.endDate());
         eventEntity.setStatus(StatusEnum.DRAFT);
 
         eventRepository.save(eventEntity);
@@ -109,15 +109,15 @@ public class EventController {
 
         Event event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
         if (event.getOrganizerUserId() == authenticatedUser.id()) {
-            event.setName(eventDTO.getEventName());
-            event.setDescription(eventDTO.getDescription());
-            event.setDanceStyles(eventDTO.getDanceStyles());
-            event.setEventType(eventDTO.getEventType());
-            event.setCountry(eventDTO.getCountry());
-            event.setCity(eventDTO.getCity());
-            event.setStartingDate(eventDTO.getStartDate());
-            event.setEndingDate(eventDTO.getEndDate());
-            event.setStatus(eventDTO.getStatus());
+            event.setName(eventDTO.eventName());
+            event.setDescription(eventDTO.description());
+            event.setDanceStyles(eventDTO.danceStyles());
+            event.setEventType(eventDTO.eventType());
+            event.setCountry(eventDTO.country());
+            event.setCity(eventDTO.city());
+            event.setStartingDate(eventDTO.startDate());
+            event.setEndingDate(eventDTO.endDate());
+            event.setStatus(eventDTO.status());
 
             eventRepository.save(event);
         }

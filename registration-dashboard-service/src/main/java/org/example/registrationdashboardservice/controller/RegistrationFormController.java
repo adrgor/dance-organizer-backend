@@ -39,15 +39,15 @@ public class RegistrationFormController {
         AuthenticatedUser authenticatedUser =
                 (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        int eventId = registrationFormDTO.getEventId();
+        int eventId = registrationFormDTO.eventId();
         int ownerId = eventClient.getEventOwnerId(eventId, jwt);
 
         RegistrationForm registrationForm = registrationFormRepository.findByEventId(eventId);
 
         if (registrationForm != null) {
-            registrationForm.setInputs(registrationFormDTO.getInputs());
+            registrationForm.setInputs(registrationFormDTO.inputs());
         } else {
-            registrationForm = new RegistrationForm(registrationFormDTO.getEventId(), registrationFormDTO.getInputs());
+            registrationForm = new RegistrationForm(registrationFormDTO.eventId(), registrationFormDTO.inputs());
         }
 
         if (ownerId == authenticatedUser.id())
