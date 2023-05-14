@@ -1,4 +1,4 @@
-package org.example.registrationdashboardservice.security;
+package com.example.participant.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +21,8 @@ public class SecurityConfiguration {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET).permitAll()
-                .antMatchers(HttpMethod.POST).authenticated()
+                .antMatchers(HttpMethod.POST).permitAll()
+                .antMatchers(HttpMethod.GET).authenticated()
                 .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

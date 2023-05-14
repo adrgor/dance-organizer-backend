@@ -19,17 +19,8 @@ public class RegistrationFormController {
     private final RegistrationFormRepository registrationFormRepository;
 
     @GetMapping
-    public RegistrationForm getRegistrationFormByEventId(@RequestParam("eventId") int eventId,
-                                                         @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException {
-
-        AuthenticatedUser authenticatedUser =
-                (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        int ownerId = eventClient.getEventOwnerId(eventId, jwt);
-
-        if (ownerId == authenticatedUser.id())
-            return registrationFormRepository.findByEventId(eventId);
-        else throw new InvalidEventOwnerException();
+    public RegistrationForm getRegistrationFormByEventId(@RequestParam("eventId") int eventId) {
+        return registrationFormRepository.findByEventId(eventId);
     }
 
     @PostMapping

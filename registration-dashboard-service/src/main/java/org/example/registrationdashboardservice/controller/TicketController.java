@@ -19,17 +19,8 @@ public class TicketController {
     private final TicketRepository ticketRepository;
 
     @GetMapping
-    public TicketList getTicketsByEventId(@RequestParam("eventId") int eventId,
-                                          @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException {
-
-        AuthenticatedUser authenticatedUser =
-                (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        int ownerId = eventClient.getEventOwnerId(eventId, jwt);
-
-        if (ownerId == authenticatedUser.id())
-            return ticketRepository.findByEventId(eventId);
-        else throw new InvalidEventOwnerException();
+    public TicketList getTicketsByEventId(@RequestParam("eventId") int eventId) {
+        return ticketRepository.findByEventId(eventId);
     }
 
     @PostMapping

@@ -19,6 +19,10 @@ spring:
           uri: lb://REGISTRATION-DASHBOARD
           predicates:
             - Path=/api/registration-dashboard/**
+        - id: participant-registrations
+          uri: lb://PARTICIPANT-REGISTRATIONS
+          predicates:
+            - Path=/api/participant-registrations/**
       globalcors:
         corsConfigurations:
           '[/**]':

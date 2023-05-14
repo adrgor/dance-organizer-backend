@@ -19,17 +19,8 @@ public class ProductController {
     private final ProductRepository productRepository;
 
     @GetMapping
-    public ProductList getProductsByEventId(@RequestParam("eventId") int eventId,
-                                            @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException {
-
-        AuthenticatedUser authenticatedUser =
-                (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        int ownerId = eventClient.getEventOwnerId(eventId, jwt);
-
-        if (ownerId == authenticatedUser.id())
-            return productRepository.findByEventId(eventId);
-        else throw new InvalidEventOwnerException();
+    public ProductList getProductsByEventId(@RequestParam("eventId") int eventId) {
+        return productRepository.findByEventId(eventId);
     }
 
     @PostMapping
