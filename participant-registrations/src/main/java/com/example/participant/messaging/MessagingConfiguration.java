@@ -1,6 +1,5 @@
-package com.example.emailservice.configuration;
+package com.example.participant.messaging;
 
-import com.example.emailservice.messaging.MQReceiver;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -11,12 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class MessagingConfiguration {
 
     @Bean
-    public Queue activateUserQueue() {
-        return new Queue("activate-user-queue");
-    }
-
-    @Bean
-    public Queue sendCustomEmailQueue() {
+    public Queue queue() {
         return new Queue("send-custom-email-queue");
     }
 
@@ -26,7 +20,7 @@ public class MessagingConfiguration {
     }
 
     @Bean
-    public MQReceiver receiver() {
-        return new MQReceiver();
+    public Sender activateUserMessageSender() {
+        return new Sender();
     }
 }

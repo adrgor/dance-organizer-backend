@@ -23,6 +23,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST).permitAll()
                 .antMatchers(HttpMethod.GET).authenticated()
+                .antMatchers(HttpMethod.PUT).authenticated()
                 .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

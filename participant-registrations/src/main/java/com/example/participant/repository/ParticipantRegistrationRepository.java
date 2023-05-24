@@ -10,4 +10,6 @@ import java.util.List;
 public interface ParticipantRegistrationRepository extends MongoRepository<Participant, String> {
 
     List<Participant> findByEventId(int eventId);
+
+    Participant findByPartnerId(String partnerId);
 }

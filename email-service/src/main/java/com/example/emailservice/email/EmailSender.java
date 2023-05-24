@@ -1,7 +1,6 @@
 package com.example.emailservice.email;
 
 import lombok.AllArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -16,10 +15,10 @@ import java.util.Map;
 @AllArgsConstructor
 public class EmailSender {
 
-    private final JavaMailSender emailSender;
+    private final JavaMailSender javaMailSender;
     private SpringTemplateEngine thymeleafTemplateEngine;
 
-    public void sendEmail(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
+    public void sendActivationEmail(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(templateModel);
         String htmlBody = thymeleafTemplateEngine.process("account-activation.html", thymeleafContext);
@@ -27,13 +26,13 @@ public class EmailSender {
         sendHtmlMessage(to, subject, htmlBody);
     }
 
-    private void sendHtmlMessage(String to, String subject, String htmlBody) throws MessagingException {
-        MimeMessage message = emailSender.createMimeMessage();
+    public void sendHtmlMessage(String to, String subject, String htmlBody) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlBody, true);
-        emailSender.send(message);
+        javaMailSender.send(message);
     }
 }

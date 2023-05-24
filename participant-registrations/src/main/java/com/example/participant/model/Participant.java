@@ -24,5 +24,5 @@ public class Participant {
     private String status = "REGISTERED";
 
     @Field("Amount paid")
-    private int amountPaid = 0;
+    private float amountPaid = 0;
 }
