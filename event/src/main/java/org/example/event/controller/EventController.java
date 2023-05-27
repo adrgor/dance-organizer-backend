@@ -50,10 +50,13 @@ public class EventController {
 
     @GetMapping("/{id}")
     public Event getEventById(@PathVariable("id") int eventId) throws EventNotFoundException {
-        AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         Event event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
-        event.setOwned(event.getOrganizerUserId() == authenticatedUser.id());
+
+        // If user is anonymous casting will throw exception
+        try {
+            AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            event.setOwned(event.getOrganizerUserId() == authenticatedUser.id());
+        } catch (Exception ignored) {}
 
         return event;
     }
