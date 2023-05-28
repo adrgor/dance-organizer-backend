@@ -1,5 +1,7 @@
 package org.example.event.model;
 
+import reactor.util.annotation.Nullable;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +12,9 @@ public record EventDTO (
      String description,
      String country,
      String city,
+     @Nullable
      Date startDate,
+     @Nullable
      Date endDate,
-     StatusEnum status
+     String status
 ) {}

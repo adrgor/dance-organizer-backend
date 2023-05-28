@@ -39,13 +39,14 @@ public class EventFilter {
                         String.join("", event.getDanceStyles()).toUpperCase().contains(danceStyles.toUpperCase()));
 
         try {
-            Date fromDate = DateFormat.getDateInstance().parse(filter.getOrDefault("from_date", ""));
-            Date toDate = DateFormat.getDateInstance().parse(filter.getOrDefault("to_date", ""));
+            Date fromDate = DateFormat.getDateInstance().parse(filter.get("from_date"));
+            Date toDate = DateFormat.getDateInstance().parse(filter.get("to_date"));
 
             eventsStream = eventsStream
                     .filter(event -> event.getEndingDate().after(fromDate))
                     .filter(event -> event.getStartingDate().before(toDate));
         } catch (ParseException ignored) {
+
         }
 
         return eventsStream

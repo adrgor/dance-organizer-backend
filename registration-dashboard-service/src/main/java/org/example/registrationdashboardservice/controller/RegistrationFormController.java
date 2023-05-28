@@ -45,4 +45,20 @@ public class RegistrationFormController {
             registrationFormRepository.save(registrationForm);
         else throw new InvalidEventOwnerException();
     }
+
+    @PutMapping
+    public void openRegistration(@RequestParam("eventId") int eventId,
+                                 @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException {
+
+        AuthenticatedUser authenticatedUser =
+                (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        int ownerId = eventClient.getEventOwnerId(eventId, jwt);
+
+        if (ownerId == authenticatedUser.id()) {
+            RegistrationForm registrationForm = registrationFormRepository.findByEventId(eventId);
+            registrationForm.setIsOpen(true);
+            registrationFormRepository.save(registrationForm);
+        } else throw new InvalidEventOwnerException();
+    }
 }

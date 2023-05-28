@@ -22,19 +22,19 @@ public class Event {
 
     private int organizerUserId;
 
-    private String name;
+    private String name = "";
 
-    private String eventType;
+    private String eventType = "";
 
     @ElementCollection
     private List<String> danceStyles;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String description = "";
 
-    private String country;
+    private String country = "";
 
-    private String city;
+    private String city = "";
 
     private Date startingDate;
 
@@ -43,7 +43,7 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<Pass> passes;
 
-    private StatusEnum status;
+    private StatusEnum status = StatusEnum.DRAFT;
 
     @Transient
     private boolean isOwned;

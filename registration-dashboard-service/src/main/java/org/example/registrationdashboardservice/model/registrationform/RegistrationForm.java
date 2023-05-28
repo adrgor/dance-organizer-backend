@@ -22,4 +22,5 @@ public class RegistrationForm {
     private Integer eventId;
     @NonNull
     private List<RegistrationInput> inputs;
+    private Boolean isOpen = false;
 }

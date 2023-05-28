@@ -75,7 +75,12 @@ public class EventController {
         eventEntity.setCity(eventDTO.city());
         eventEntity.setStartingDate(eventDTO.startDate());
         eventEntity.setEndingDate(eventDTO.endDate());
-        eventEntity.setStatus(StatusEnum.DRAFT);
+
+        if (eventDTO.status().equals("PUBLISHED")) {
+            eventEntity.setStatus(StatusEnum.PUBLISHED);
+        } else {
+            eventEntity.setStatus(StatusEnum.DRAFT);
+        }
 
         eventRepository.save(eventEntity);
     }
@@ -120,7 +125,12 @@ public class EventController {
             event.setCity(eventDTO.city());
             event.setStartingDate(eventDTO.startDate());
             event.setEndingDate(eventDTO.endDate());
-            event.setStatus(eventDTO.status());
+
+            if (eventDTO.status().equals("PUBLISHED")) {
+                event.setStatus(StatusEnum.PUBLISHED);
+            } else {
+                event.setStatus(StatusEnum.DRAFT);
+            }
 
             eventRepository.save(event);
         }
