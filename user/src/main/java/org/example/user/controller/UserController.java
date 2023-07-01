@@ -37,7 +37,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO user) throws UserNotFoundException, IncorrectPasswordException, UserNotActivatedException {
+    public String login(@RequestBody UserDTO user) throws UserNotFoundException,
+                                                          IncorrectPasswordException,
+                                                          UserNotActivatedException {
         Optional<User> optionalUser = userRepository.findByUsernameOrEmail(user.getUsername(), user.getUsername());
         User userEntity = optionalUser.orElseThrow(UserNotFoundException::new);
 

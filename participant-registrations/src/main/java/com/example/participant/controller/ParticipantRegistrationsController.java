@@ -35,7 +35,8 @@ public class ParticipantRegistrationsController {
     private final Sender sender;
 
     @GetMapping
-    public List<Participant> getParticipantRegistrations(@RequestParam Map<String, String> filter, @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException {
+    public List<Participant> getParticipantRegistrations(@RequestParam Map<String, String> filter,
+                                                         @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException {
         int eventId = Integer.parseInt(filter.get(EVENT_ID));
 
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -76,7 +77,9 @@ public class ParticipantRegistrationsController {
     }
 
     @PutMapping
-    public void updateParticipantRegistration(@RequestParam(EVENT_ID) int eventId, @RequestBody ParticipantUpdateDTO participantUpdateDTO, @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException, ParticipantNotFoundException {
+    public void updateParticipantRegistration(@RequestParam(EVENT_ID) int eventId,
+                                              @RequestBody ParticipantUpdateDTO participantUpdateDTO,
+                                              @RequestHeader("Authorization") String jwt) throws InvalidEventOwnerException, ParticipantNotFoundException {
 
         AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

@@ -29,6 +29,5 @@ public class User {
     private String email;
 
     private boolean isActivated;
-    private boolean isLockedOut;
 }
 

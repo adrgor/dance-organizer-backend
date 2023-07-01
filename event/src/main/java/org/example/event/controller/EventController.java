@@ -28,9 +28,25 @@ public class EventController {
         return EventFilter.filter(events, filter);
     }
 
+    @GetMapping("/{id}")
+    public Event getEventById(@PathVariable("id") int eventId) throws EventNotFoundException {
+        Event event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
+
+        // If user is anonymous casting will throw exception
+        try {
+            AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            event.setOwned(event.getOrganizerUserId() == authenticatedUser.id());
+        } catch (Exception ignored) {}
+
+        return event;
+    }
+
     @GetMapping("/my_events")
     public List<Event> getMyEvents(@RequestParam Map<String, String> filter) {
-        AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
 
         List<Event> events = eventRepository.findByOrganizerUserId(authenticatedUser.id());
         return EventFilter.filter(events, filter);
@@ -46,19 +62,6 @@ public class EventController {
     @GetMapping("/last_page")
     public long getEventLastPageNumber(@RequestParam("events_per_page") int numberOfEvents) {
         return eventRepository.countByStatus(StatusEnum.PUBLISHED) / numberOfEvents;
-    }
-
-    @GetMapping("/{id}")
-    public Event getEventById(@PathVariable("id") int eventId) throws EventNotFoundException {
-        Event event = eventRepository.findById(eventId).orElseThrow(EventNotFoundException::new);
-
-        // If user is anonymous casting will throw exception
-        try {
-            AuthenticatedUser authenticatedUser = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            event.setOwned(event.getOrganizerUserId() == authenticatedUser.id());
-        } catch (Exception ignored) {}
-
-        return event;
     }
 
     @PostMapping
