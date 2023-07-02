@@ -12,10 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 @RestController
@@ -91,7 +88,7 @@ public class ParticipantRegistrationsController {
 
         Participant participant = participantRegistrationRepository.findById(participantUpdateDTO.participantId()).orElseThrow(ParticipantNotFoundException::new);
         participant.setPartnerId(participantUpdateDTO.partnerId());
-        participant.setStatus(participantUpdateDTO.status());
+        participant.setStatus(participantUpdateDTO.status().toUpperCase(Locale.ROOT));
         participant.setFormInputs(participantUpdateDTO.participantData());
         participant.setAmountPaid(participantUpdateDTO.amountPaid());
         participantRegistrationRepository.save(participant);
@@ -142,7 +139,7 @@ public class ParticipantRegistrationsController {
         return participants.parallelStream().filter(participant -> participant.getParticipantId()
                 .contains(filter.getOrDefault(PARTICIPANT_ID, "")))
                 .filter(participant -> participant.getParticipantId().contains(filter.getOrDefault(PARTNER_ID, "")))
-                .filter(participant -> participant.getStatus().contains(filter.getOrDefault(STATUS, "")))
+                .filter(participant -> participant.getStatus().contains(filter.getOrDefault(STATUS, "").toUpperCase(Locale.ROOT)))
                 .filter(participant -> filterPrice(filter.getOrDefault(PAYMENT_OPERATION, "ge"), participant.getAmountPaid(), Float.parseFloat(filter.getOrDefault(AMOUNT_PAID, "-0.01"))))
                 .toList();
     }

@@ -12,6 +12,8 @@ import org.example.user.repository.UserRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,7 +45,10 @@ public class UserController {
         Optional<User> optionalUser = userRepository.findByUsernameOrEmail(user.getUsername(), user.getUsername());
         User userEntity = optionalUser.orElseThrow(UserNotFoundException::new);
 
-        if(!userEntity.getPassword().equals(user.getPassword())) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        boolean isPasswordMatching = passwordEncoder.matches(user.getPassword(), userEntity.getPassword());
+
+        if(!isPasswordMatching) {
             throw new IncorrectPasswordException();
         }
 
@@ -66,7 +71,11 @@ public class UserController {
 
         User userEntity = new User();
         userEntity.setUsername(user.getUsername());
-        userEntity.setPassword(user.getPassword());
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+
+        userEntity.setPassword(hashedPassword);
         userEntity.setEmail(user.getEmail());
 
         userRepository.save(userEntity);
